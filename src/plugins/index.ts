@@ -107,16 +107,16 @@ const plugins: Plugin[] = [
   payloadCloudPlugin(),
 ]
 
-// if (process.env.NODE_ENV === "production") {
-//   plugins.push(
-//     vercelBlobStorage({
-//       enabled: true,
-//       collections: {
-//         media: true,
-//       },
-//       token: process.env.BLOB_READ_WRITE_TOKEN,
-//     })
-//   )
-// }
+if (process.env.NODE_ENV === "production") {
+  plugins.push(
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    })
+  )
+}
 
 export { plugins }
