@@ -25,7 +25,6 @@ export const SiteConfig: GlobalConfig = {
         {
           name: 'meta',
           label: 'SEO',
-          localized: true,
           fields: [
             OverviewField({
               titlePath: 'meta.title',
@@ -34,11 +33,21 @@ export const SiteConfig: GlobalConfig = {
             }),
             MetaTitleField({
               hasGenerateFn: true,
+              overrides: {
+                custom: { name: 'meta.title' }
+              }
             }),
             MetaImageField({
               relationTo: 'media',
+              overrides: {
+                custom: { name: 'meta.image' }
+              }
             }),
-            MetaDescriptionField({}),
+            MetaDescriptionField({
+              overrides: {
+                custom: { name: 'meta.description' }
+              }
+            }),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

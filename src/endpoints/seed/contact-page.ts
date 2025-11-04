@@ -12,9 +12,7 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
     slug: 'contact',
     _status: 'published',
     hero: {
-      hero: {
-        type: 'none',
-      }
+      type: 'none',
     },
     layout: [
       {

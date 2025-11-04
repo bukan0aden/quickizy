@@ -67,15 +67,12 @@ export const Pages: CollectionConfig<'pages'> = {
         {
           fields: [hero],
           label: 'Hero',
-          localized: true,
-          name: "hero"
         },
         {
           fields: [
             {
               name: 'layout',
               type: 'blocks',
-              localized: true,
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
               required: true,
               admin: {
@@ -88,21 +85,32 @@ export const Pages: CollectionConfig<'pages'> = {
         {
           name: 'meta',
           label: 'SEO',
-          localized: true,
           fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
+            {
+              ...
+              OverviewField({
+                titlePath: 'meta.title',
+                descriptionPath: 'meta.description',
+                imagePath: 'meta.image',
+              })
+            },
             MetaTitleField({
               hasGenerateFn: true,
+              overrides: {
+                custom: { name: 'meta.title' }
+              }
             }),
             MetaImageField({
               relationTo: 'media',
+              overrides: {
+                custom: { name: 'meta.image' }
+              }
             }),
-
-            MetaDescriptionField({}),
+            MetaDescriptionField({
+              overrides: {
+                custom: { name: 'meta.description' }
+              }
+            }),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,

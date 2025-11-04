@@ -6,7 +6,7 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
+import { GenerateDescription, GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
@@ -15,8 +15,15 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+const generateTitle: GenerateTitle<Post | Page> = async ({ doc, req }) => {
+  const siteConfig = await req.payload.findGlobal({
+    slug: 'site-config',
+    depth: 1,
+    select: {
+      siteName: true
+    }
+  })
+  return doc?.title ? `${doc.title} | ${siteConfig.siteName}` : `${siteConfig.siteName}`
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -54,6 +61,13 @@ const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
     generateURL,
+    fields({ defaultFields }) {
+      return defaultFields.map(field => ({
+        ...field,
+        name: field.admin?.custom?.name,
+        localized: field.admin?.custom?.name !== "meta.image" ? true : false
+      }))
+    },
   }),
   formBuilderPlugin({
     fields: {
@@ -93,16 +107,16 @@ const plugins: Plugin[] = [
   payloadCloudPlugin(),
 ]
 
-if (process.env.NODE_ENV === "production") {
-  plugins.push(
-    vercelBlobStorage({
-      enabled: true,
-      collections: {
-        media: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    })
-  )
-}
+// if (process.env.NODE_ENV === "production") {
+//   plugins.push(
+//     vercelBlobStorage({
+//       enabled: true,
+//       collections: {
+//         media: true,
+//       },
+//       token: process.env.BLOB_READ_WRITE_TOKEN,
+//     })
+//   )
+// }
 
 export { plugins }

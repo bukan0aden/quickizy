@@ -161,49 +161,47 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    hero: {
-      type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-      richText?: {
-        root: {
-          type: string;
-          children: {
-            type: any;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    richText?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
           version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-      links?:
-        | {
-            link: {
-              type?: ('reference' | 'custom') | null;
-              newTab?: boolean | null;
-              reference?:
-                | ({
-                    relationTo: 'pages';
-                    value: number | Page;
-                  } | null)
-                | ({
-                    relationTo: 'posts';
-                    value: number | Post;
-                  } | null);
-              url?: string | null;
-              label: string;
-              /**
-               * Choose how the link should be rendered.
-               */
-              appearance?: ('default' | 'outline') | null;
-            };
-            id?: string | null;
-          }[]
-        | null;
-      media?: (number | null) | Media;
-    };
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    media?: (number | null) | Media;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
@@ -231,23 +229,21 @@ export interface Page {
 export interface Post {
   id: number;
   title: string;
+  heroImage?: (number | null) | Media;
   content: {
-    heroImage?: (number | null) | Media;
-    content: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
+    root: {
+      type: string;
+      children: {
+        type: any;
         version: number;
-      };
-      [k: string]: unknown;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
     };
+    [k: string]: unknown;
   };
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
@@ -1095,28 +1091,24 @@ export interface PagesSelect<T extends boolean = true> {
   hero?:
     | T
     | {
-        hero?:
+        type?: T;
+        richText?: T;
+        links?:
           | T
           | {
-              type?: T;
-              richText?: T;
-              links?:
+              link?:
                 | T
                 | {
-                    link?:
-                      | T
-                      | {
-                          type?: T;
-                          newTab?: T;
-                          reference?: T;
-                          url?: T;
-                          label?: T;
-                          appearance?: T;
-                        };
-                    id?: T;
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
                   };
-              media?: T;
+              id?: T;
             };
+        media?: T;
       };
   layout?:
     | T
@@ -1231,12 +1223,8 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  content?:
-    | T
-    | {
-        heroImage?: T;
-        content?: T;
-      };
+  heroImage?: T;
+  content?: T;
   relatedPosts?: T;
   categories?: T;
   tags?: T;
