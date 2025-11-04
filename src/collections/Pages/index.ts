@@ -59,6 +59,7 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true
     },
     {
       type: 'tabs',
@@ -66,12 +67,15 @@ export const Pages: CollectionConfig<'pages'> = {
         {
           fields: [hero],
           label: 'Hero',
+          localized: true,
+          name: "hero"
         },
         {
           fields: [
             {
               name: 'layout',
               type: 'blocks',
+              localized: true,
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
               required: true,
               admin: {
@@ -84,6 +88,7 @@ export const Pages: CollectionConfig<'pages'> = {
         {
           name: 'meta',
           label: 'SEO',
+          localized: true,
           fields: [
             OverviewField({
               titlePath: 'meta.title',
@@ -117,7 +122,9 @@ export const Pages: CollectionConfig<'pages'> = {
         position: 'sidebar',
       },
     },
-    slugField(),
+    slugField({
+      localized: true,
+    }),
   ],
   hooks: {
     afterChange: [revalidatePage],

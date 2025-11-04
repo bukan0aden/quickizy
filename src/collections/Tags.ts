@@ -4,8 +4,12 @@ import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
 
-export const Categories: CollectionConfig = {
-  slug: 'categories',
+export const Tags: CollectionConfig = {
+  slug: 'tags',
+  labels: {
+    singular: 'Tag',
+    plural: 'Tags',
+  },
   access: {
     create: authenticated,
     delete: authenticated,

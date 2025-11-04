@@ -6,6 +6,10 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+
+import { en } from '@payloadcms/translations/languages/en'
+import { id } from '@payloadcms/translations/languages/id'
+
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -16,6 +20,8 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { Tags } from './collections/Tags'
+import { SiteConfig } from './SiteConfig/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,9 +70,9 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Tags, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, SiteConfig],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
@@ -90,5 +96,13 @@ export default buildConfig({
       },
     },
     tasks: [],
+  },
+  i18n: {
+    fallbackLanguage: 'en',
+    supportedLanguages: { en, id }
+  },
+  localization: {
+    defaultLocale: 'en',
+    locales: ['en', 'id'],
   },
 })

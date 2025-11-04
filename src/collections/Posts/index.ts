@@ -25,6 +25,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+
 import { slugField } from 'payload'
 
 export const Posts: CollectionConfig<'posts'> = {
@@ -42,6 +43,7 @@ export const Posts: CollectionConfig<'posts'> = {
     title: true,
     slug: true,
     categories: true,
+    tags: true,
     meta: {
       image: true,
       description: true,
@@ -70,11 +72,15 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       type: 'tabs',
       tabs: [
         {
+          label: 'Content',
+          name: 'content',
+          localized: true,
           fields: [
             {
               name: 'heroImage',
@@ -100,9 +106,11 @@ export const Posts: CollectionConfig<'posts'> = {
               required: true,
             },
           ],
-          label: 'Content',
         },
+
+        // 🧩 Meta Tab (Categories, Tags, Related)
         {
+          label: 'Meta',
           fields: [
             {
               name: 'relatedPosts',
@@ -129,12 +137,21 @@ export const Posts: CollectionConfig<'posts'> = {
               hasMany: true,
               relationTo: 'categories',
             },
+            {
+              name: 'tags',
+              type: 'relationship',
+              relationTo: 'tags',
+              hasMany: true,
+              admin: {
+                position: 'sidebar',
+              },
+            },
           ],
-          label: 'Meta',
         },
         {
           name: 'meta',
           label: 'SEO',
+          localized: true,
           fields: [
             OverviewField({
               titlePath: 'meta.title',
@@ -214,7 +231,9 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    slugField(),
+    slugField({
+      localized: true
+    }),
   ],
   hooks: {
     afterChange: [revalidatePost],

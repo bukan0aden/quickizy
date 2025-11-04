@@ -17,6 +17,16 @@ export const post1: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
     _status: 'published',
     authors: [author],
     content: {
+      content: {
+        root: {
+          type: "",
+          children: [],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1,
+        }
+      },
       root: {
         type: 'root',
         children: [
